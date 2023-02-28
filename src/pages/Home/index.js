@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import * as S from './styles';
+import { Loader } from '../../components/Loader';
 
 import arrow from '../../assets/images/icons/arrow.svg';
 import edit from '../../assets/images/icons/edit.svg';
@@ -11,11 +12,17 @@ export function Home() {
   const [contacts, setContacts] = useState([]);
   const [orderBy, setOrderBy] = useState('ASC');
   const [search, setSearch] = useState('');
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
+    setIsLoading(true);
+
     fetch(`http://localhost:3001/contacts?orderBy=${orderBy}`)
       .then((response) => response.json())
-      .then((response) => setContacts(response))
+      .then(async (response) => {
+        setContacts(response);
+        setIsLoading(false);
+      })
       .catch((error) => console.error(error));
   }, [orderBy]);
 
@@ -27,14 +34,15 @@ export function Home() {
     setSearch(event.target.value);
   }
 
-  const filteredContacts = useMemo(() => contacts.filter(
-    (contact) => contact.name
-      .toLowerCase()
-      .includes(search.toLowerCase()),
-  ), [contacts, search]);
+  const filteredContacts = useMemo(
+    () => contacts.filter((contact) => contact.name.toLowerCase().includes(search.toLowerCase())),
+    [contacts, search],
+  );
 
   return (
     <S.Container>
+      {isLoading && <Loader />}
+
       <S.InputSearchContainer>
         <input
           value={search}
