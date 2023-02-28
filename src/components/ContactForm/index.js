@@ -7,6 +7,8 @@ import { Select } from '../Select';
 import { Button } from '../Button';
 import { FormGroup } from '../FormGroup';
 
+import { isEmailValid } from '../../utils/isEmailValid';
+
 export function ContactForm({ buttonLabel }) {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -45,24 +47,57 @@ export function ContactForm({ buttonLabel }) {
     setErrors((prevState) => prevState.filter((error) => error.field !== 'name'));
   }, []);
 
+  const handleEmailChange = useCallback(
+    (event) => {
+      setEmail(event.target.value);
+
+      if (event.target.value && !isEmailValid(event.target.value)) {
+        const errorAlreadyExist = errors.find(
+          (error) => error.field === 'email',
+        );
+
+        if (errorAlreadyExist) {
+          return;
+        }
+
+        setErrors((prevState) => [
+          ...prevState,
+          {
+            field: 'email',
+            message: 'Invalid e-mail',
+          },
+        ]);
+        return;
+      }
+
+      setErrors((prevState) => prevState.filter((error) => error.field !== 'email'));
+    },
+    [errors],
+  );
+
+  function getErrorMessageByFieldName(fieldName) {
+    return errors.find((error) => error.field === fieldName)?.message;
+  }
+
   return (
     <S.Form onSubmit={handleSubmit}>
-      <FormGroup>
+      <FormGroup error={getErrorMessageByFieldName('name')}>
         <Input
           type="text"
           placeholder="Name"
           value={name}
           onChange={handleNameChange}
+          error={getErrorMessageByFieldName('name')}
         />
       </FormGroup>
 
-      <FormGroup error="Invalid e-mail">
+      <FormGroup error={getErrorMessageByFieldName('email')}>
         <Input
           type="text"
           placeholder="E-mail"
           value={email}
-          onChange={(event) => setEmail(event.target.value)}
-          error
+          onChange={handleEmailChange}
+          error={getErrorMessageByFieldName('email')}
         />
       </FormGroup>
 
