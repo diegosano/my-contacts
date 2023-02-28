@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import * as S from './styles';
@@ -27,11 +27,11 @@ export function Home() {
     setSearch(event.target.value);
   }
 
-  const filteredContacts = contacts.filter(
+  const filteredContacts = useMemo(() => contacts.filter(
     (contact) => contact.name
       .toLowerCase()
       .includes(search.toLowerCase()),
-  );
+  ), [contacts, search]);
 
   return (
     <S.Container>
