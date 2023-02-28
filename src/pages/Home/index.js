@@ -10,6 +10,7 @@ import trash from '../../assets/images/icons/trash.svg';
 export function Home() {
   const [contacts, setContacts] = useState([]);
   const [orderBy, setOrderBy] = useState('ASC');
+  const [search, setSearch] = useState('');
 
   useEffect(() => {
     fetch(`http://localhost:3001/contacts?orderBy=${orderBy}`)
@@ -22,10 +23,25 @@ export function Home() {
     setOrderBy((prevState) => (prevState === 'ASC' ? 'DESC' : 'ASC'));
   }
 
+  function handleChangeSearch(event) {
+    setSearch(event.target.value);
+  }
+
+  const filteredContacts = contacts.filter(
+    (contact) => contact.name
+      .toLowerCase()
+      .includes(search.toLowerCase()),
+  );
+
   return (
     <S.Container>
       <S.InputSearchContainer>
-        <input type="text" placeholder="Search contact" />
+        <input
+          value={search}
+          onChange={handleChangeSearch}
+          type="text"
+          placeholder="Search contact"
+        />
       </S.InputSearchContainer>
 
       <S.Header>
@@ -38,15 +54,17 @@ export function Home() {
         <Link to="/new">New contact</Link>
       </S.Header>
 
-      <S.ListHeader orderBy={orderBy}>
-        <button type="button" onClick={handleToggleOrderBy}>
-          <span>Name</span>
+      {filteredContacts.length > 0 && (
+        <S.ListHeader orderBy={orderBy}>
+          <button type="button" onClick={handleToggleOrderBy}>
+            <span>Name</span>
 
-          <img src={arrow} alt="Arrow icon" />
-        </button>
-      </S.ListHeader>
+            <img src={arrow} alt="Arrow icon" />
+          </button>
+        </S.ListHeader>
+      )}
 
-      {contacts.map((contact) => (
+      {filteredContacts.map((contact) => (
         <S.Card key={contact.id}>
           <div className="info">
             <div className="contact-name">
