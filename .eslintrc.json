@@ -5,6 +5,7 @@
     },
     "extends": [
       "plugin:react/recommended",
+      "plugin:react-hooks/recommended",
       "airbnb",
       "plugin:react/jsx-runtime"
     ],
@@ -17,11 +18,14 @@
         "sourceType": "module"
     },
     "plugins": [
-        "react"
+        "react",
+        "react-hooks"
     ],
     "rules": {
       "linebreak-style": ["error", "windows"],
       "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
-      "import/prefer-default-export": "off"
+      "import/prefer-default-export": "off",
+      "react-hooks/rules-of-hooks": "error",
+      "react-hooks/exhaustive-deps": "warn"
     }
 }

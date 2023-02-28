@@ -15,15 +15,26 @@ export function Home() {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    setIsLoading(true);
+    async function loadContacts() {
+      try {
+        setIsLoading(true);
 
-    fetch(`http://localhost:3001/contacts?orderBy=${orderBy}`)
-      .then((response) => response.json())
-      .then(async (response) => setContacts(response))
-      .catch((error) => console.error(error))
-      .finally(() => {
+        const response = await fetch(
+          `http://localhost:3001/contacts?orderBy=${orderBy}`,
+        );
+
+        const data = await response.json();
+        setContacts(data);
+      } catch (error) {
+        console.error({
+          error,
+        });
+      } finally {
         setIsLoading(false);
-      });
+      }
+    }
+
+    loadContacts();
   }, [orderBy]);
 
   function handleToggleOrderBy() {
