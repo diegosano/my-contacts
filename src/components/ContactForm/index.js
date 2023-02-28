@@ -21,12 +21,12 @@ export function ContactForm({ buttonLabel }) {
     (event) => {
       event.preventDefault();
 
-      console.log({
-        name,
-        email,
-        phone,
-        category,
-      });
+      // console.log({
+      //   name,
+      //   email,
+      //   phone,
+      //   category,
+      // });
     },
     [name, email, phone, category],
   );

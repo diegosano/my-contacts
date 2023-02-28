@@ -12,6 +12,7 @@ export const Input = styled.input`
   font-size: 16px;
   border: 2px solid #ffffff;
   transition: border-color 0.2s ease-in;
+  appearance: none;
 
   &:focus {
     border-color: ${({ theme }) => theme.colors.primary.main};

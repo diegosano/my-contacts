@@ -16,7 +16,6 @@ export function App() {
 
         <S.Container>
           <Header />
-
           <Routes />
         </S.Container>
       </ThemeProvider>
