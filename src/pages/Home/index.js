@@ -1,5 +1,7 @@
 import { Link } from 'react-router-dom';
+
 import * as S from './styles';
+import { Modal } from '../../components/Modal';
 
 import arrow from '../../assets/images/icons/arrow.svg';
 import edit from '../../assets/images/icons/edit.svg';
@@ -8,6 +10,8 @@ import trash from '../../assets/images/icons/trash.svg';
 export function Home() {
   return (
     <S.Container>
+      <Modal danger />
+
       <S.InputSearchContainer>
         <input type="text" placeholder="Search contact" />
       </S.InputSearchContainer>
