@@ -9,13 +9,18 @@ import trash from '../../assets/images/icons/trash.svg';
 
 export function Home() {
   const [contacts, setContacts] = useState([]);
+  const [orderBy, setOrderBy] = useState('ASC');
 
   useEffect(() => {
-    fetch('http://localhost:3001/contacts')
+    fetch(`http://localhost:3001/contacts?orderBy=${orderBy}`)
       .then((response) => response.json())
       .then((response) => setContacts(response))
       .catch((error) => console.error(error));
-  }, []);
+  }, [orderBy]);
+
+  function handleToggleOrderBy() {
+    setOrderBy((prevState) => (prevState === 'ASC' ? 'DESC' : 'ASC'));
+  }
 
   return (
     <S.Container>
@@ -33,42 +38,38 @@ export function Home() {
         <Link to="/new">New contact</Link>
       </S.Header>
 
-      <S.ListContainer>
-        <header>
-          <button type="button">
-            <span>Name</span>
+      <S.ListHeader orderBy={orderBy}>
+        <button type="button" onClick={handleToggleOrderBy}>
+          <span>Name</span>
 
-            <img src={arrow} alt="Arrow icon" />
-          </button>
-        </header>
+          <img src={arrow} alt="Arrow icon" />
+        </button>
+      </S.ListHeader>
 
-        {contacts.map((contact) => (
-          <S.Card key={contact.id}>
-            <div className="info">
-              <div className="contact-name">
-                <strong>{contact.name}</strong>
+      {contacts.map((contact) => (
+        <S.Card key={contact.id}>
+          <div className="info">
+            <div className="contact-name">
+              <strong>{contact.name}</strong>
 
-                {contact.category_name && (
-                  <small>{contact.category_name}</small>
-                )}
-              </div>
-
-              <span>{contact.email}</span>
-              <span>{contact.phone}</span>
+              {contact.category_name && <small>{contact.category_name}</small>}
             </div>
 
-            <div className="actions">
-              <Link to={`/edit/${contact.id}`}>
-                <img src={edit} alt="Edit icon" />
-              </Link>
+            <span>{contact.email}</span>
+            <span>{contact.phone}</span>
+          </div>
 
-              <button type="button">
-                <img src={trash} alt="Trash icon" />
-              </button>
-            </div>
-          </S.Card>
-        ))}
-      </S.ListContainer>
+          <div className="actions">
+            <Link to={`/edit/${contact.id}`}>
+              <img src={edit} alt="Edit icon" />
+            </Link>
+
+            <button type="button">
+              <img src={trash} alt="Trash icon" />
+            </button>
+          </div>
+        </S.Card>
+      ))}
     </S.Container>
   );
 }
