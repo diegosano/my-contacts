@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import * as S from './styles';
@@ -7,6 +8,15 @@ import edit from '../../assets/images/icons/edit.svg';
 import trash from '../../assets/images/icons/trash.svg';
 
 export function Home() {
+  const [contacts, setContacts] = useState([]);
+
+  useEffect(() => {
+    fetch('http://localhost:3001/contacts')
+      .then((response) => response.json())
+      .then((response) => setContacts(response))
+      .catch((error) => console.error(error));
+  }, []);
+
   return (
     <S.Container>
       <S.InputSearchContainer>
@@ -14,7 +24,11 @@ export function Home() {
       </S.InputSearchContainer>
 
       <S.Header>
-        <strong>3 contacts</strong>
+        <strong>
+          {contacts.length}
+          {' '}
+          {contacts.length === 1 ? 'contact' : 'contacts'}
+        </strong>
 
         <Link to="/new">New contact</Link>
       </S.Header>
@@ -28,27 +42,32 @@ export function Home() {
           </button>
         </header>
 
-        <S.Card>
-          <div className="info">
-            <div className="contact-name">
-              <strong>Diego Sano</strong>
-              <small>Instagram</small>
+        {contacts.map((contact) => (
+          <S.Card key={contact.id}>
+            <div className="info">
+              <div className="contact-name">
+                <strong>{contact.name}</strong>
+
+                {contact.category_name && (
+                  <small>{contact.category_name}</small>
+                )}
+              </div>
+
+              <span>{contact.email}</span>
+              <span>{contact.phone}</span>
             </div>
 
-            <span>vedrivop@dodog.mq</span>
-            <span>23bb8c6c-daf3-5813-9ad9-d69b9bb517ee</span>
-          </div>
+            <div className="actions">
+              <Link to={`/edit/${contact.id}`}>
+                <img src={edit} alt="Edit icon" />
+              </Link>
 
-          <div>
-            <Link to="/edit">
-              <img src={edit} alt="Edit icon" />
-            </Link>
-
-            <button type="button">
-              <img src={trash} alt="Trash icon" />
-            </button>
-          </div>
-        </S.Card>
+              <button type="button">
+                <img src={trash} alt="Trash icon" />
+              </button>
+            </div>
+          </S.Card>
+        ))}
       </S.ListContainer>
     </S.Container>
   );
