@@ -7,6 +7,10 @@ import trash from '../../assets/images/icons/trash.svg';
 export function Home() {
   return (
     <S.Container>
+      <S.InputSearchContainer>
+        <input type="text" placeholder="Search contact" />
+      </S.InputSearchContainer>
+
       <S.Header>
         <strong>3 contacts</strong>
 
