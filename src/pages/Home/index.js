@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import * as S from './styles';
 
 import arrow from '../../assets/images/icons/arrow.svg';
@@ -14,7 +15,7 @@ export function Home() {
       <S.Header>
         <strong>3 contacts</strong>
 
-        <a href="/">New contact</a>
+        <Link to="/new">New contact</Link>
       </S.Header>
 
       <S.ListContainer>
@@ -38,51 +39,9 @@ export function Home() {
           </div>
 
           <div>
-            <a href="/">
+            <Link to="/edit">
               <img src={edit} alt="Edit icon" />
-            </a>
-
-            <button type="button">
-              <img src={trash} alt="Trash icon" />
-            </button>
-          </div>
-        </S.Card>
-        <S.Card>
-          <div className="info">
-            <div className="contact-name">
-              <strong>Diego Sano</strong>
-              <small>Instagram</small>
-            </div>
-
-            <span>vedrivop@dodog.mq</span>
-            <span>23bb8c6c-daf3-5813-9ad9-d69b9bb517ee</span>
-          </div>
-
-          <div>
-            <a href="/">
-              <img src={edit} alt="Edit icon" />
-            </a>
-
-            <button type="button">
-              <img src={trash} alt="Trash icon" />
-            </button>
-          </div>
-        </S.Card>
-        <S.Card>
-          <div className="info">
-            <div className="contact-name">
-              <strong>Diego Sano</strong>
-              <small>Instagram</small>
-            </div>
-
-            <span>vedrivop@dodog.mq</span>
-            <span>23bb8c6c-daf3-5813-9ad9-d69b9bb517ee</span>
-          </div>
-
-          <div>
-            <a href="/">
-              <img src={edit} alt="Edit icon" />
-            </a>
+            </Link>
 
             <button type="button">
               <img src={trash} alt="Trash icon" />
