@@ -8,13 +8,14 @@ import { Button } from '../Button';
 import { FormGroup } from '../FormGroup';
 
 import { isEmailValid } from '../../utils/isEmailValid';
+import { useErrors } from '../../hooks/useErrors';
 
 export function ContactForm({ buttonLabel }) {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
   const [category, setCategory] = useState('');
-  const [errors, setErrors] = useState([]);
+  const { setError, removeError, getErrorMessageByFieldName } = useErrors();
 
   const handleSubmit = useCallback(
     (event) => {
@@ -34,50 +35,32 @@ export function ContactForm({ buttonLabel }) {
     setName(event.target.value);
 
     if (!event.target.value) {
-      setErrors((prevState) => [
-        ...prevState,
-        {
-          field: 'name',
-          message: 'Name is required',
-        },
-      ]);
+      setError({
+        field: 'name',
+        message: 'Name is required',
+      });
       return;
     }
 
-    setErrors((prevState) => prevState.filter((error) => error.field !== 'name'));
-  }, []);
+    removeError('name');
+  }, [setError, removeError]);
 
   const handleEmailChange = useCallback(
     (event) => {
       setEmail(event.target.value);
 
       if (event.target.value && !isEmailValid(event.target.value)) {
-        const errorAlreadyExist = errors.find(
-          (error) => error.field === 'email',
-        );
-
-        if (errorAlreadyExist) {
-          return;
-        }
-
-        setErrors((prevState) => [
-          ...prevState,
-          {
-            field: 'email',
-            message: 'Invalid e-mail',
-          },
-        ]);
+        setError({
+          field: 'email',
+          message: 'Invalid e-mail',
+        });
         return;
       }
 
-      setErrors((prevState) => prevState.filter((error) => error.field !== 'email'));
+      removeError('email');
     },
-    [errors],
+    [setError, removeError],
   );
-
-  function getErrorMessageByFieldName(fieldName) {
-    return errors.find((error) => error.field === fieldName)?.message;
-  }
 
   return (
     <S.Form onSubmit={handleSubmit}>
