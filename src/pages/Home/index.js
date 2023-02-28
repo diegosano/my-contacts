@@ -19,11 +19,11 @@ export function Home() {
 
     fetch(`http://localhost:3001/contacts?orderBy=${orderBy}`)
       .then((response) => response.json())
-      .then(async (response) => {
-        setContacts(response);
+      .then(async (response) => setContacts(response))
+      .catch((error) => console.error(error))
+      .finally(() => {
         setIsLoading(false);
-      })
-      .catch((error) => console.error(error));
+      });
   }, [orderBy]);
 
   function handleToggleOrderBy() {
@@ -41,7 +41,7 @@ export function Home() {
 
   return (
     <S.Container>
-      {isLoading && <Loader />}
+      <Loader isLoading={isLoading} />
 
       <S.InputSearchContainer>
         <input
