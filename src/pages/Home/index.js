@@ -3,17 +3,21 @@ import { Link } from 'react-router-dom';
 
 import * as S from './styles';
 import { Loader } from '../../components/Loader';
+import { Button } from '../../components/Button';
+
+import ContactsService from '../../services/ContactsService';
 
 import arrow from '../../assets/images/icons/arrow.svg';
 import edit from '../../assets/images/icons/edit.svg';
 import trash from '../../assets/images/icons/trash.svg';
-import ContactsService from '../../services/ContactsService';
+import sad from '../../assets/images/sad.svg';
 
 export function Home() {
   const [contacts, setContacts] = useState([]);
   const [orderBy, setOrderBy] = useState('ASC');
   const [search, setSearch] = useState('');
   const [isLoading, setIsLoading] = useState(true);
+  const [hasError, setHasError] = useState(false);
 
   useEffect(() => {
     async function loadContacts() {
@@ -21,10 +25,8 @@ export function Home() {
         setIsLoading(true);
         const contactsList = await ContactsService.listAll(orderBy);
         setContacts(contactsList);
-      } catch (error) {
-        console.error({
-          error,
-        });
+      } catch {
+        setHasError(true);
       } finally {
         setIsLoading(false);
       }
@@ -59,15 +61,33 @@ export function Home() {
         />
       </S.InputSearchContainer>
 
-      <S.Header>
-        <strong>
-          {contacts.length}
-          {' '}
-          {contacts.length === 1 ? 'contact' : 'contacts'}
-        </strong>
+      <S.Header hasError={hasError}>
+        {!hasError && (
+          <strong>
+            {contacts.length}
+            {' '}
+            {contacts.length === 1 ? 'contact' : 'contacts'}
+          </strong>
+        )}
 
         <Link to="/new">New contact</Link>
       </S.Header>
+
+      {hasError && (
+        <S.ErrorContainer>
+          <img src={sad} alt="Sad face" />
+
+          <div className="details">
+            <strong>
+              An error has occurred
+            </strong>
+
+            <Button type="button">
+              Try again
+            </Button>
+          </div>
+        </S.ErrorContainer>
+      )}
 
       {filteredContacts.length > 0 && (
         <S.ListHeader orderBy={orderBy}>

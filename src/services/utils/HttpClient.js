@@ -11,9 +11,19 @@ class HttpClient {
 
     let body = null;
 
+    console.log({
+      responseOk: response.ok,
+      body,
+    });
+
     if (contentType.includes('application/json')) {
       body = await response.json();
     }
+
+    console.log({
+      responseOk: response.ok,
+      body,
+    });
 
     if (!response.ok) {
       throw new APIError(response, body);
