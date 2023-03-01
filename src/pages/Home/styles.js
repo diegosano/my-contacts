@@ -61,7 +61,6 @@ export const EmptyListContainer = styled.div`
   margin-top: 16px;
 
   p {
-    font-weight: 400;
     font-size: 16px;
     line-height: 20px;
     text-align: center;
@@ -129,7 +128,6 @@ export const Card = styled.div`
 
     span {
       display: block;
-      font-weight: 400;
       font-size: 14px;
       line-height: 18px;
       color: ${({ theme }) => theme.colors.gray[200]};
@@ -164,5 +162,18 @@ export const ErrorContainer = styled.div`
       color: ${({ theme }) => theme.colors.danger.main};
       margin-bottom: 8px;
     }
+  }
+`;
+
+export const SearchNotFoundContainer = styled.div`
+  display: flex;
+  align-items: flex-start;
+  margin-top: 16px;
+
+  p {
+    color: ${({ theme }) => theme.colors.gray[200]};
+    line-height: 20px;
+    margin-left: 24px;
+    word-break: break-word;
   }
 `;

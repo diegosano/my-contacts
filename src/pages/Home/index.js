@@ -14,6 +14,7 @@ import edit from '../../assets/images/icons/edit.svg';
 import trash from '../../assets/images/icons/trash.svg';
 import sad from '../../assets/images/sad.svg';
 import emptyBox from '../../assets/images/empty-box.svg';
+import magnifierQuestion from '../../assets/images/magnifier-question.svg';
 
 export function Home() {
   const [contacts, setContacts] = useState([]);
@@ -83,9 +84,9 @@ export function Home() {
       >
         {!hasError && contacts.length > 0 && (
           <strong>
-            {contacts.length}
+            {filteredContacts.length}
             {' '}
-            {contacts.length === 1 ? 'contact' : 'contacts'}
+            {filteredContacts.length === 1 ? 'contact' : 'contacts'}
           </strong>
         )}
 
@@ -116,11 +117,28 @@ export function Home() {
                 You don&apos;t have any contact registered yet!
                 Click on the
                 {' '}
-                <strong>”New contact”</strong>
+                <strong>&quot;New contact&quot;</strong>
                 {' '}
                 button above to register your first one!
               </p>
             </S.EmptyListContainer>
+          )}
+
+          {contacts.length > 0 && filteredContacts.length === 0 && (
+            <S.SearchNotFoundContainer>
+              <img src={magnifierQuestion} alt="Question icon" />
+
+              <p>
+                No results found for
+                {' '}
+                <strong>
+                  &quot;
+                  {search}
+                  &quot;
+                </strong>
+                .
+              </p>
+            </S.SearchNotFoundContainer>
           )}
 
           {filteredContacts.length > 0 && (
