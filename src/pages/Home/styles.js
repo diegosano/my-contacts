@@ -26,7 +26,7 @@ export const InputSearchContainer = styled.div`
 export const Header = styled.header`
   display: flex;
   align-items: center;
-  justify-content: ${({ hasError }) => (hasError ? 'flex-end' : 'space-between')};
+  justify-content: ${({ justifyContent }) => justifyContent};
   margin-top: 32px;
   border-bottom: 2px solid ${({ theme }) => theme.colors.gray[100]};
   padding-bottom: 16px;
@@ -50,6 +50,26 @@ export const Header = styled.header`
     &:hover {
       background: ${({ theme }) => theme.colors.primary.main};
       color: #fff;
+    }
+  }
+`;
+
+export const EmptyListContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 16px;
+
+  p {
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 20px;
+    text-align: center;
+    color: ${({ theme }) => theme.colors.gray[200]};
+    margin-top: 8px;
+
+    strong {
+      color: ${({ theme }) => theme.colors.primary.main};
     }
   }
 `;

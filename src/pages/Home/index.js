@@ -13,6 +13,7 @@ import arrow from '../../assets/images/icons/arrow.svg';
 import edit from '../../assets/images/icons/edit.svg';
 import trash from '../../assets/images/icons/trash.svg';
 import sad from '../../assets/images/sad.svg';
+import emptyBox from '../../assets/images/empty-box.svg';
 
 export function Home() {
   const [contacts, setContacts] = useState([]);
@@ -59,17 +60,28 @@ export function Home() {
     <S.Container>
       <Loader isLoading={isLoading} />
 
-      <S.InputSearchContainer>
-        <input
-          value={search}
-          onChange={handleChangeSearch}
-          type="text"
-          placeholder="Search contact"
-        />
-      </S.InputSearchContainer>
+      {contacts.length > 0 && (
+        <S.InputSearchContainer>
+          <input
+            value={search}
+            onChange={handleChangeSearch}
+            type="text"
+            placeholder="Search contact"
+          />
+        </S.InputSearchContainer>
+      )}
 
-      <S.Header hasError={hasError}>
-        {!hasError && (
+      <S.Header
+        justifyContent={
+          // eslint-disable-next-line no-nested-ternary
+          hasError
+            ? 'flex-end'
+            : contacts.length > 0
+              ? 'space-between'
+              : 'center'
+        }
+      >
+        {!hasError && contacts.length > 0 && (
           <strong>
             {contacts.length}
             {' '}
@@ -96,6 +108,21 @@ export function Home() {
 
       {!hasError && (
         <>
+          {contacts.length === 0 && !isLoading && (
+            <S.EmptyListContainer>
+              <img src={emptyBox} alt="Empty box" />
+
+              <p>
+                You don&apos;t have any contact registered yet!
+                Click on the
+                {' '}
+                <strong>”New contact”</strong>
+                {' '}
+                button above to register your first one!
+              </p>
+            </S.EmptyListContainer>
+          )}
+
           {filteredContacts.length > 0 && (
             <S.ListHeader orderBy={orderBy}>
               <button type="button" onClick={handleToggleOrderBy}>
