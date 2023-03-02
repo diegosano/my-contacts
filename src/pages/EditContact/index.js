@@ -1,4 +1,6 @@
-import { useCallback, useEffect, useState } from 'react';
+import {
+  useCallback, useEffect, useRef, useState,
+} from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 
 import { ContactForm } from '../../components/ContactForm';
@@ -10,7 +12,7 @@ import { toast } from '../../utils/toast';
 
 export function EditContact() {
   const [isLoading, setIsLoading] = useState(true);
-  const [contact, setContact] = useState({});
+  const contactFormRef = useRef(null);
   const { id } = useParams();
   const history = useHistory();
 
@@ -18,9 +20,9 @@ export function EditContact() {
     async function loadContact() {
       try {
         setIsLoading(true);
-        const contactData = await ContactsService.findOne(id);
+        const contact = await ContactsService.findOne(id);
 
-        setContact(contactData);
+        contactFormRef.current.setFieldsValues(contact);
         setIsLoading(false);
       } catch {
         toast({
@@ -31,7 +33,9 @@ export function EditContact() {
       }
     }
 
-    loadContact();
+    if (contactFormRef.current) {
+      loadContact();
+    }
   }, [history, id]);
 
   const handleSubmit = useCallback(() => {
@@ -44,7 +48,11 @@ export function EditContact() {
 
       <PageHeader title="Edit Contact" />
 
-      <ContactForm buttonLabel="Save" onSubmit={handleSubmit} />
+      <ContactForm
+        ref={contactFormRef}
+        buttonLabel="Save"
+        onSubmit={handleSubmit}
+      />
     </>
   );
 }
