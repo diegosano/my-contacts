@@ -12,7 +12,7 @@ export function ToastMessage({ message, onRemoveMessage }) {
   }, [message.id, onRemoveMessage]);
 
   return (
-    <S.Container variant={message.type} onClick={handleRemoveToast}>
+    <S.Container variant={message.type} onClick={handleRemoveToast} role="button" tabIndex={0}>
       {message.type === 'danger' && <img src={xCircle} alt="X icon" />}
 
       {message.type === 'success' && <img src={checkCircle} alt="Check icon" />}
