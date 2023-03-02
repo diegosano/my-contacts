@@ -12,7 +12,12 @@ export function Modal({
   confirmLabel,
   onCancel,
   onConfirm,
+  visible,
 }) {
+  if (!visible) {
+    return null;
+  }
+
   return ReactDOM.createPortal(
     <S.Overlay>
       <S.Container danger={danger}>
@@ -43,6 +48,7 @@ Modal.propTypes = {
   confirmLabel: PropTypes.string,
   onCancel: PropTypes.func.isRequired,
   onConfirm: PropTypes.func.isRequired,
+  visible: PropTypes.bool.isRequired,
 };
 
 Modal.defaultProps = {

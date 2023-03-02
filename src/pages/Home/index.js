@@ -23,6 +23,8 @@ export function Home() {
   const [search, setSearch] = useState('');
   const [isLoading, setIsLoading] = useState(true);
   const [hasError, setHasError] = useState(false);
+  const [isDeleteModalVisible, setIsDeleteModalVisible] = useState(false);
+  const [contactBeingDeleted, setContactBeingDeleted] = useState(null);
 
   const loadContacts = useCallback(async () => {
     try {
@@ -53,6 +55,19 @@ export function Home() {
     loadContacts();
   }, [loadContacts]);
 
+  function handleDeleteContact(contact) {
+    setIsDeleteModalVisible(true);
+    setContactBeingDeleted(contact);
+  }
+
+  const handleCloseDeleteModal = useCallback(() => {
+    setIsDeleteModalVisible(false);
+  }, []);
+
+  const handleConfirmDeleteContact = useCallback(() => {
+
+  }, []);
+
   const filteredContacts = useMemo(
     () => contacts.filter((contact) => contact.name.toLowerCase().includes(search.toLowerCase())),
     [contacts, search],
@@ -63,13 +78,14 @@ export function Home() {
       <Loader isLoading={isLoading} />
 
       <Modal
-        title="Are you sure you want to remove the contact ”Mateus Silva”?"
+        title={`Are you sure you want to remove the contact ”${contactBeingDeleted?.name}”?`}
         confirmLabel="Delete"
-        onCancel={() => alert('cancel')}
-        onConfirm={() => alert('delete')}
+        onCancel={handleCloseDeleteModal}
+        onConfirm={handleConfirmDeleteContact}
+        visible={isDeleteModalVisible}
         danger
       >
-        teste
+        <p>This action cannot be undone!</p>
       </Modal>
 
       {contacts.length > 0 && (
@@ -182,7 +198,10 @@ export function Home() {
                   <img src={edit} alt="Edit icon" />
                 </Link>
 
-                <button type="button">
+                <button
+                  type="button"
+                  onClick={() => handleDeleteContact(contact)}
+                >
                   <img src={trash} alt="Trash icon" />
                 </button>
               </div>
