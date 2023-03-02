@@ -9,6 +9,7 @@ import { Modal } from '../../components/Modal';
 import { Button } from '../../components/Button';
 
 import ContactsService from '../../services/ContactsService';
+import { toast } from '../../utils/toast';
 
 import arrow from '../../assets/images/icons/arrow.svg';
 import edit from '../../assets/images/icons/edit.svg';
@@ -24,7 +25,8 @@ export function Home() {
   const [isLoading, setIsLoading] = useState(true);
   const [hasError, setHasError] = useState(false);
   const [isDeleteModalVisible, setIsDeleteModalVisible] = useState(false);
-  const [contactBeingDeleted, setContactBeingDeleted] = useState(null);
+  const [contactBeingDeleted, setContactBeingDeleted] = useState({});
+  const [isLoadingDelete, setIsLoadingDelete] = useState(false);
 
   const loadContacts = useCallback(async () => {
     try {
@@ -62,11 +64,32 @@ export function Home() {
 
   const handleCloseDeleteModal = useCallback(() => {
     setIsDeleteModalVisible(false);
+    setContactBeingDeleted({});
   }, []);
 
-  const handleConfirmDeleteContact = useCallback(() => {
+  const handleConfirmDeleteContact = useCallback(async () => {
+    try {
+      setIsLoadingDelete(true);
+      await ContactsService.delete(contactBeingDeleted.id);
 
-  }, []);
+      setContacts(
+        (prevState) => prevState.filter((contact) => contact.id !== contactBeingDeleted.id),
+      );
+      handleCloseDeleteModal();
+
+      toast({
+        type: 'success',
+        text: 'Contact successfully deleted',
+      });
+    } catch {
+      toast({
+        type: 'danger',
+        text: 'An error occurred while deleting the contact!',
+      });
+    } finally {
+      setIsLoadingDelete(false);
+    }
+  }, [contactBeingDeleted.id, handleCloseDeleteModal]);
 
   const filteredContacts = useMemo(
     () => contacts.filter((contact) => contact.name.toLowerCase().includes(search.toLowerCase())),
@@ -83,6 +106,7 @@ export function Home() {
         onCancel={handleCloseDeleteModal}
         onConfirm={handleConfirmDeleteContact}
         visible={isDeleteModalVisible}
+        isLoading={isLoadingDelete}
         danger
       >
         <p>This action cannot be undone!</p>

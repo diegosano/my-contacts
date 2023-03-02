@@ -50,5 +50,9 @@ export const Footer = styled.footer`
     &:hover {
       color: ${({ theme }) => theme.colors.gray[900]};
     }
+
+    &:disabled {
+      cursor: not-allowed;
+    }
   }
 `;
