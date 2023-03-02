@@ -6,4 +6,5 @@ export const Container = styled.div`
   z-index: 2;
   left: 50%;
   transform: translateX(-50%);
+  cursor: pointer;
 `;
