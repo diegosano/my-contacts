@@ -35,7 +35,7 @@ export const ContactForm = forwardRef(({ buttonLabel, onSubmit }, ref) => {
       setName(contact.name ?? '');
       setEmail(contact.email ?? '');
       setPhone(formatPhone(contact.phone ?? ''));
-      setCategoryId(contact.categoryId ?? '');
+      setCategoryId(contact.category_id ?? '');
     },
   }), []);
 
@@ -68,10 +68,10 @@ export const ContactForm = forwardRef(({ buttonLabel, onSubmit }, ref) => {
       });
 
       setIsSubmitting(false);
-      setName('');
-      setEmail('');
-      setPhone('');
-      setCategoryId('');
+      // setName('');
+      // setEmail('');
+      // setPhone('');
+      // setCategoryId('');
     },
     [name, email, phone, categoryId, onSubmit],
   );

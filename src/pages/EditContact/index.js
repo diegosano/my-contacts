@@ -40,9 +40,22 @@ export function EditContact() {
     }
   }, [history, id]);
 
-  const handleSubmit = useCallback(() => {
-    //
-  }, []);
+  const handleSubmit = useCallback(async (contact) => {
+    try {
+      const contactData = await ContactsService.update(id, contact);
+
+      setContactName(contactData.name);
+      toast({
+        type: 'success',
+        text: 'Contact successfully updated',
+      });
+    } catch {
+      toast({
+        type: 'danger',
+        text: 'An error occurred while updating the contact!',
+      });
+    }
+  }, [id]);
 
   return (
     <>
