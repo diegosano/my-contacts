@@ -9,13 +9,14 @@ export function ToastContainer() {
   const [messages, setMessages] = useState([]);
 
   useEffect(() => {
-    function addToastFromEvent({ type, text }) {
+    function addToastFromEvent({ type, text, duration }) {
       setMessages((prevState) => [
         ...prevState,
         {
           id: Math.random(),
           type,
           text,
+          duration,
         },
       ]);
     }
