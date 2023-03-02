@@ -28,7 +28,7 @@ export function ContactForm({ buttonLabel, onSubmit }) {
     async function loadCategories() {
       try {
         setIsLoadingCategories(true);
-        const categoriesList = await CategoriesService.listAll();
+        const categoriesList = await CategoriesService.findAll();
         setCategories(categoriesList);
       } catch {
       } finally {

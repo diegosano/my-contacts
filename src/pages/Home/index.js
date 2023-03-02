@@ -26,7 +26,7 @@ export function Home() {
   const loadContacts = useCallback(async () => {
     try {
       setIsLoading(true);
-      const contactsList = await ContactsService.listAll(orderBy);
+      const contactsList = await ContactsService.findAll(orderBy);
       setContacts(contactsList);
       setHasError(false);
     } catch {
