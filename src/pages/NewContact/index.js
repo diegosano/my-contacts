@@ -2,16 +2,24 @@ import { useCallback } from 'react';
 
 import { ContactForm } from '../../components/ContactForm';
 import { PageHeader } from '../../components/PageHeader';
+
 import ContactsService from '../../services/ContactsService';
+import { toast } from '../../utils/toast';
 
 export function NewContact() {
   const handleSubmit = useCallback(async (contact) => {
     try {
-      const response = await ContactsService.create(contact);
+      await ContactsService.create(contact);
 
-      console.log(response);
-    } catch (error) {
-      console.error(error);
+      toast({
+        type: 'success',
+        text: 'Contact successfully registered',
+      });
+    } catch {
+      toast({
+        type: 'danger',
+        text: 'An error occurred while registering the contact!',
+      });
     }
   }, []);
 
