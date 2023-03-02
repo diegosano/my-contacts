@@ -1,4 +1,5 @@
 import PropTypes from 'prop-types';
+import { Spinner } from '../Spinner';
 
 import * as S from './styles';
 
@@ -9,7 +10,9 @@ export function FormGroup({ children, error, isLoading }) {
         {children}
 
         {isLoading && (
-          <div className="loader" />
+          <div className="loader">
+            <Spinner size={16} />
+          </div>
         )}
       </div>
       {error && <small>{error}</small>}
