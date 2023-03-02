@@ -62,7 +62,15 @@ export function Home() {
     <S.Container>
       <Loader isLoading={isLoading} />
 
-      <Modal danger />
+      <Modal
+        title="Are you sure you want to remove the contact ”Mateus Silva”?"
+        confirmLabel="Delete"
+        onCancel={() => alert('cancel')}
+        onConfirm={() => alert('delete')}
+        danger
+      >
+        teste
+      </Modal>
 
       {contacts.length > 0 && (
         <S.InputSearchContainer>
@@ -117,12 +125,12 @@ export function Home() {
               <img src={emptyBox} alt="Empty box" />
 
               <p>
-                You don&apos;t have any contact registered yet!
-                Click on the
+                You don&apos;t have any contact registered yet! Click on the
                 {' '}
                 <strong>&quot;New contact&quot;</strong>
                 {' '}
-                button above to register your first one!
+                button above to
+                register your first one!
               </p>
             </S.EmptyListContainer>
           )}
