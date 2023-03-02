@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 import * as S from './styles';
 import { Input } from '../Input';
@@ -10,15 +10,28 @@ import { FormGroup } from '../FormGroup';
 import { isEmailValid } from '../../utils/isEmailValid';
 import { formatPhone } from '../../utils/formatPhone';
 import { useErrors } from '../../hooks/useErrors';
+import CategoriesService from '../../services/CategoriesService';
 
 export function ContactForm({ buttonLabel }) {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
-  const [category, setCategory] = useState('');
+  const [categoryId, setCategoryId] = useState('');
+  const [categories, setCategories] = useState([]);
   const {
     errors, setError, removeError, getErrorMessageByFieldName,
   } = useErrors();
+
+  useEffect(() => {
+    async function loadCategories() {
+      try {
+        const categoriesList = await CategoriesService.listAll();
+        setCategories(categoriesList);
+      } catch {}
+    }
+
+    loadCategories();
+  }, []);
 
   const handleSubmit = useCallback(
     (event) => {
@@ -30,25 +43,28 @@ export function ContactForm({ buttonLabel }) {
       //   name,
       //   email,
       //   onlyNumbersPhone,
-      //   category,
+      //   categoryId,
       // });
     },
-    [name, email, phone, category],
+    [name, email, phone, categoryId],
   );
 
-  const handleNameChange = useCallback((event) => {
-    setName(event.target.value);
+  const handleNameChange = useCallback(
+    (event) => {
+      setName(event.target.value);
 
-    if (!event.target.value) {
-      setError({
-        field: 'name',
-        message: 'Name is required',
-      });
-      return;
-    }
+      if (!event.target.value) {
+        setError({
+          field: 'name',
+          message: 'Name is required',
+        });
+        return;
+      }
 
-    removeError('name');
-  }, [setError, removeError]);
+      removeError('name');
+    },
+    [setError, removeError],
+  );
 
   const handleEmailChange = useCallback(
     (event) => {
@@ -120,17 +136,22 @@ export function ContactForm({ buttonLabel }) {
 
       <FormGroup>
         <Select
-          value={category}
-          onChange={(event) => setCategory(event.target.value)}
+          value={categoryId}
+          onChange={(event) => setCategoryId(event.target.value)}
         >
           <option value="">Select a category</option>
-          <option value="instagram">Instagram</option>
-          <option value="discord">Discord</option>
+          {categories.map((category) => (
+            <option key={category.id} value={category.id}>
+              { category.name }
+            </option>
+          ))}
         </Select>
       </FormGroup>
 
       <S.ButtonContainer>
-        <Button type="submit" disabled={!isFormValid}>{buttonLabel}</Button>
+        <Button type="submit" disabled={!isFormValid}>
+          {buttonLabel}
+        </Button>
       </S.ButtonContainer>
     </S.Form>
   );
