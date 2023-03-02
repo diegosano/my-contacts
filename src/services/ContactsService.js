@@ -6,13 +6,13 @@ class ContactsService {
   }
 
   async listAll(orderBy = 'ASC') {
-    return this.httpClient.get(
-      `/contacts?orderBy=${orderBy}`,
-    );
+    return this.httpClient.get(`/contacts?orderBy=${orderBy}`);
   }
 
   async create(contact) {
-    return this.httpClient.post('/contacts', contact);
+    return this.httpClient.post('/contacts', {
+      body: contact,
+    });
   }
 }
 

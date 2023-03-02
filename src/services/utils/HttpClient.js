@@ -5,24 +5,32 @@ class HttpClient {
     this.baseURL = baseURL;
   }
 
-  get(path) {
+  get(path, options) {
     return this.makeRequest(path, {
       method: 'GET',
+      headers: options?.headers,
     });
   }
 
-  post(path, body) {
+  post(path, options) {
     return this.makeRequest(path, {
       method: 'POST',
-      body,
+      body: options?.body,
+      headers: options?.headers,
     });
   }
 
   async makeRequest(path, options) {
     const headers = new Headers();
 
-    if (options.body) {
+    if (options?.body) {
       headers.append('Content-Type', 'application/json');
+    }
+
+    if (options?.headers) {
+      Object.entries(options.headers).forEach(([name, value]) => {
+        headers.append(name, value);
+      });
     }
 
     const response = await fetch(`${this.baseURL}${path}`, {
