@@ -18,15 +18,16 @@ export class EventManager {
 
     this.listeners[event].forEach((listener) => listener(payload));
   }
+
+  removeListener(event, listenerToRemove) {
+    const listeners = this.listeners[event];
+
+    if (!listeners) {
+      return;
+    }
+
+    const filteredListeners = listeners.filter((listener) => listener !== listenerToRemove);
+
+    this.listeners[event] = filteredListeners;
+  }
 }
-
-const toastEventManager = new EventManager();
-
-toastEventManager.on('addtoast', (payload) => console.log(payload));
-toastEventManager.on('addtoast', (payload) => console.log(payload));
-
-toastEventManager.emit('addtoast', 'hello world');
-
-console.log({
-  toastEventManager,
-});
