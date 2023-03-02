@@ -45,9 +45,9 @@ export function ContactForm({ buttonLabel, onSubmit }) {
       const onlyNumbersPhone = phone.replace(/\D/g, '');
 
       await onSubmit({
+        phone: onlyNumbersPhone,
         name,
         email,
-        onlyNumbersPhone,
         categoryId,
       });
     },
@@ -92,7 +92,7 @@ export function ContactForm({ buttonLabel, onSubmit }) {
     (event) => {
       setPhone(formatPhone(event.target.value));
 
-      if (event.target.value) {
+      if (!event.target.value) {
         setError({
           field: 'phone',
           message: 'Invalid phone',
