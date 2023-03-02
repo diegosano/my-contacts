@@ -11,7 +11,7 @@ export function NewContact() {
         name: formData.name,
         email: formData.email,
         phone: formData.phone,
-        category_id: formData.categoryId,
+        categoryId: formData.categoryId,
       };
 
       const response = await ContactsService.create(contact);
