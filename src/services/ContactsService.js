@@ -10,6 +10,10 @@ class ContactsService {
       `/contacts?orderBy=${orderBy}`,
     );
   }
+
+  async create(contact) {
+    return this.httpClient.post('/contacts', contact);
+  }
 }
 
 export default new ContactsService();
