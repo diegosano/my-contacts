@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 
 import * as S from './styles';
 import { Loader } from '../../components/Loader';
+import { Modal } from '../../components/Modal';
 import { Button } from '../../components/Button';
 
 import ContactsService from '../../services/ContactsService';
@@ -60,6 +61,8 @@ export function Home() {
   return (
     <S.Container>
       <Loader isLoading={isLoading} />
+
+      <Modal danger />
 
       {contacts.length > 0 && (
         <S.InputSearchContainer>
