@@ -11,7 +11,10 @@ export const Button = styled.button`
   color: #fff;
   font-weight: 700;
   line-height: 20px;
-  transition: background 0.2s ease-in;
+  transition: background-color 0.2s ease-in;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
   &:hover {
     background: ${({ theme }) => theme.colors.primary.light};

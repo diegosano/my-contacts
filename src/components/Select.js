@@ -13,6 +13,7 @@ export const Select = styled.select`
   border: 2px solid #ffffff;
   transition: border-color 0.2s ease-in;
   appearance: none;
+  color: ${({ theme }) => theme.colors.gray[900]};
 
   &:focus {
     border-color: ${({ theme }) => theme.colors.primary.main};
@@ -21,5 +22,7 @@ export const Select = styled.select`
   &:disabled {
     background-color: ${({ theme }) => theme.colors.gray[100]};
     border-color: ${({ theme }) => theme.colors.gray[200]};
+    color: ${({ theme }) => theme.colors.gray[200]};
+    opacity: 1;
   }
 `;

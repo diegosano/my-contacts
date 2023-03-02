@@ -5,15 +5,8 @@ import { PageHeader } from '../../components/PageHeader';
 import ContactsService from '../../services/ContactsService';
 
 export function NewContact() {
-  const handleSubmit = useCallback(async (formData) => {
+  const handleSubmit = useCallback(async (contact) => {
     try {
-      const contact = {
-        name: formData.name,
-        email: formData.email,
-        phone: formData.phone,
-        categoryId: formData.categoryId,
-      };
-
       const response = await ContactsService.create(contact);
 
       console.log(response);

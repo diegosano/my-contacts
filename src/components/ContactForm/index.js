@@ -11,6 +11,7 @@ import { isEmailValid } from '../../utils/isEmailValid';
 import { formatPhone } from '../../utils/formatPhone';
 import { useErrors } from '../../hooks/useErrors';
 import CategoriesService from '../../services/CategoriesService';
+import { Spinner } from '../Spinner';
 
 export function ContactForm({ buttonLabel, onSubmit }) {
   const [name, setName] = useState('');
@@ -19,6 +20,7 @@ export function ContactForm({ buttonLabel, onSubmit }) {
   const [categoryId, setCategoryId] = useState('');
   const [categories, setCategories] = useState([]);
   const [isLoadingCategories, setIsLoadingCategories] = useState(true);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const {
     errors, setError, removeError, getErrorMessageByFieldName,
   } = useErrors();
@@ -41,7 +43,7 @@ export function ContactForm({ buttonLabel, onSubmit }) {
   const handleSubmit = useCallback(
     async (event) => {
       event.preventDefault();
-
+      setIsSubmitting(true);
       const onlyNumbersPhone = phone.replace(/\D/g, '');
 
       await onSubmit({
@@ -50,6 +52,8 @@ export function ContactForm({ buttonLabel, onSubmit }) {
         email,
         categoryId,
       });
+
+      setIsSubmitting(false);
     },
     [name, email, phone, categoryId, onSubmit],
   );
@@ -116,6 +120,7 @@ export function ContactForm({ buttonLabel, onSubmit }) {
           value={name}
           onChange={handleNameChange}
           error={getErrorMessageByFieldName('name')}
+          disabled={isSubmitting}
         />
       </FormGroup>
 
@@ -126,6 +131,7 @@ export function ContactForm({ buttonLabel, onSubmit }) {
           value={email}
           onChange={handleEmailChange}
           error={getErrorMessageByFieldName('email')}
+          disabled={isSubmitting}
         />
       </FormGroup>
 
@@ -136,6 +142,7 @@ export function ContactForm({ buttonLabel, onSubmit }) {
           value={phone}
           onChange={handlePhoneChange}
           maxLength={15}
+          disabled={isSubmitting}
         />
       </FormGroup>
 
@@ -143,7 +150,7 @@ export function ContactForm({ buttonLabel, onSubmit }) {
         <Select
           value={categoryId}
           onChange={(event) => setCategoryId(event.target.value)}
-          disabled={isLoadingCategories}
+          disabled={isLoadingCategories || isSubmitting}
         >
           <option value="">Select a category</option>
           {categories.map((category) => (
@@ -155,8 +162,8 @@ export function ContactForm({ buttonLabel, onSubmit }) {
       </FormGroup>
 
       <S.ButtonContainer>
-        <Button type="submit" disabled={!isFormValid}>
-          {buttonLabel}
+        <Button type="submit" disabled={!isFormValid || isSubmitting}>
+          {isSubmitting ? <Spinner size={16} /> : buttonLabel}
         </Button>
       </S.ButtonContainer>
     </S.Form>
