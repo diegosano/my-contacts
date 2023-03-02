@@ -1,4 +1,4 @@
-import { useCallback } from 'react';
+import { useCallback, useRef } from 'react';
 
 import { ContactForm } from '../../components/ContactForm';
 import { PageHeader } from '../../components/PageHeader';
@@ -7,9 +7,13 @@ import ContactsService from '../../services/ContactsService';
 import { toast } from '../../utils/toast';
 
 export function NewContact() {
+  const contactFormRef = useRef(null);
+
   const handleSubmit = useCallback(async (contact) => {
     try {
       await ContactsService.create(contact);
+
+      contactFormRef.current?.resetFields();
 
       toast({
         type: 'success',
@@ -27,7 +31,11 @@ export function NewContact() {
     <>
       <PageHeader title="New Contact" />
 
-      <ContactForm buttonLabel="Create" onSubmit={handleSubmit} />
+      <ContactForm
+        ref={contactFormRef}
+        buttonLabel="Create"
+        onSubmit={handleSubmit}
+      />
     </>
   );
 }
