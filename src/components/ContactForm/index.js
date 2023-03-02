@@ -53,6 +53,10 @@ export function ContactForm({ buttonLabel, onSubmit }) {
       });
 
       setIsSubmitting(false);
+      setName('');
+      setEmail('');
+      setPhone('');
+      setCategoryId('');
     },
     [name, email, phone, categoryId, onSubmit],
   );
