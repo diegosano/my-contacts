@@ -7,11 +7,10 @@ import { Select } from '../Select';
 import { Button } from '../Button';
 import { FormGroup } from '../FormGroup';
 
+import CategoriesService from '../../services/CategoriesService';
 import { isEmailValid } from '../../utils/isEmailValid';
 import { formatPhone } from '../../utils/formatPhone';
 import { useErrors } from '../../hooks/useErrors';
-import CategoriesService from '../../services/CategoriesService';
-import { Spinner } from '../Spinner';
 
 export function ContactForm({ buttonLabel, onSubmit }) {
   const [name, setName] = useState('');
@@ -162,8 +161,8 @@ export function ContactForm({ buttonLabel, onSubmit }) {
       </FormGroup>
 
       <S.ButtonContainer>
-        <Button type="submit" disabled={!isFormValid || isSubmitting}>
-          {isSubmitting ? <Spinner size={16} /> : buttonLabel}
+        <Button type="submit" disabled={!isFormValid} isLoading={isSubmitting}>
+          {buttonLabel}
         </Button>
       </S.ButtonContainer>
     </S.Form>
