@@ -1,10 +1,10 @@
 import { useCallback, useEffect, useRef } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 
-import ContactsService from '../../services/ContactsService';
-import { toast } from '../../utils/toast';
-import { useSafeAsyncState } from '../../hooks/useSafeAsyncState';
-import { useSafeAsyncAction } from '../../hooks/useSafeAsyncAction';
+import ContactsService from '../../../services/ContactsService';
+import { toast } from '../../../utils/toast';
+import { useSafeAsyncState } from '../../../hooks/useSafeAsyncState';
+import { useSafeAsyncAction } from '../../../hooks/useSafeAsyncAction';
 
 export function useEditContact() {
   const [isLoading, setIsLoading] = useSafeAsyncState(true);

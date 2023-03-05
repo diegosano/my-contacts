@@ -1,7 +1,7 @@
 import { useCallback, useRef } from 'react';
 
-import ContactsService from '../../services/ContactsService';
-import { toast } from '../../utils/toast';
+import ContactsService from '../../../services/ContactsService';
+import { toast } from '../../../utils/toast';
 
 export function useNewContact() {
   const contactFormRef = useRef(null);

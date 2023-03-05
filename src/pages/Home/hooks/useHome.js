@@ -2,9 +2,9 @@ import {
   useCallback, useEffect, useMemo, useState,
 } from 'react';
 
-import ContactsService from '../../services/ContactsService';
-import { toast } from '../../utils/toast';
-import { useSafeAsyncState } from '../../hooks/useSafeAsyncState';
+import ContactsService from '../../../services/ContactsService';
+import { toast } from '../../../utils/toast';
+import { useSafeAsyncState } from '../../../hooks/useSafeAsyncState';
 
 export function useHome() {
   const [contacts, setContacts] = useSafeAsyncState([]);

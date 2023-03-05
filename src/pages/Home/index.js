@@ -8,7 +8,7 @@ import { SearchNotFound } from './components/SearchNotFound';
 import { ContactsList } from './components/ContactsList';
 import { Modal } from '../../components/Modal';
 
-import { useHome } from './useHome';
+import { useHome } from './hooks/useHome';
 
 export function Home() {
   const {

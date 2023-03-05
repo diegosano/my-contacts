@@ -1,6 +1,7 @@
 import { ContactForm } from '../../components/ContactForm';
 import { PageHeader } from '../../components/PageHeader';
-import { useNewContact } from './useNewContact';
+
+import { useNewContact } from './hooks/useNewContact';
 
 export function NewContact() {
   const { contactFormRef, handleSubmit } = useNewContact();

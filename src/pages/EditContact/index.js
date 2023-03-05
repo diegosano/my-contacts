@@ -2,7 +2,7 @@ import { ContactForm } from '../../components/ContactForm';
 import { PageHeader } from '../../components/PageHeader';
 import { Loader } from '../../components/Loader';
 
-import { useEditContact } from './useEditContact';
+import { useEditContact } from './hooks/useEditContact';
 
 export function EditContact() {
   const {
