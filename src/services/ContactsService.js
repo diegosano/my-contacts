@@ -6,12 +6,16 @@ class ContactsService {
     this.httpClient = new HttpClient('http://localhost:3001');
   }
 
-  findAll(orderBy = 'ASC') {
-    return this.httpClient.get(`/contacts?orderBy=${orderBy}`);
+  async findAll(orderBy = 'ASC') {
+    const contacts = await this.httpClient.get(`/contacts?orderBy=${orderBy}`);
+
+    return contacts.map(ContactMapper.toDomain);
   }
 
-  findOne(contactId) {
-    return this.httpClient.get(`/contacts/${contactId}`);
+  async findOne(contactId) {
+    const contact = await this.httpClient.get(`/contacts/${contactId}`);
+
+    return ContactMapper.toDomain(contact);
   }
 
   create(contact) {
