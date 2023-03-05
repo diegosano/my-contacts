@@ -7,13 +7,13 @@ import { InputSearch } from './components/InputSearch';
 import { Header } from './components/Header';
 import { ErrorStatus } from './components/ErrorStatus';
 import { EmptyList } from './components/EmptyList';
+import { SearchNotFound } from './components/SearchNotFound';
 
 import { useHome } from './useHome';
 
 import arrow from '../../assets/images/icons/arrow.svg';
 import edit from '../../assets/images/icons/edit.svg';
 import trash from '../../assets/images/icons/trash.svg';
-import magnifierQuestion from '../../assets/images/magnifier-question.svg';
 
 export function Home() {
   const {
@@ -24,8 +24,8 @@ export function Home() {
     isDeleteModalVisible,
     isLoadingDelete,
     contacts,
-    search,
-    handleChangeSearch,
+    searchTerm,
+    handleChangeSearchTerm,
     hasError,
     filteredContacts,
     handleTryAgain,
@@ -39,7 +39,7 @@ export function Home() {
       <Loader isLoading={isLoading} />
 
       {contacts.length > 0 && (
-        <InputSearch value={search} onChange={handleChangeSearch} />
+        <InputSearch value={searchTerm} onChange={handleChangeSearchTerm} />
       )}
 
       <Header
@@ -59,20 +59,7 @@ export function Home() {
           )}
 
           {contacts.length > 0 && filteredContacts.length === 0 && (
-            <S.SearchNotFoundContainer>
-              <img src={magnifierQuestion} alt="Question icon" />
-
-              <p>
-                No results found for
-                {' '}
-                <strong>
-                  &quot;
-                  {search}
-                  &quot;
-                </strong>
-                .
-              </p>
-            </S.SearchNotFoundContainer>
+            <SearchNotFound searchTerm={searchTerm} />
           )}
 
           {filteredContacts.length > 0 && (

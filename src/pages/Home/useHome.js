@@ -9,7 +9,7 @@ import { useSafeAsyncState } from '../../hooks/useSafeAsyncState';
 export function useHome() {
   const [contacts, setContacts] = useSafeAsyncState([]);
   const [orderBy, setOrderBy] = useState('ASC');
-  const [search, setSearch] = useState('');
+  const [searchTerm, setSearchTerm] = useState('');
   const [isLoading, setIsLoading] = useSafeAsyncState(true);
   const [hasError, setHasError] = useSafeAsyncState(false);
   const [isDeleteModalVisible, setIsDeleteModalVisible] = useState(false);
@@ -37,8 +37,8 @@ export function useHome() {
     setOrderBy((prevState) => (prevState === 'ASC' ? 'DESC' : 'ASC'));
   }
 
-  function handleChangeSearch(event) {
-    setSearch(event.target.value);
+  function handleChangeSearchTerm(event) {
+    setSearchTerm(event.target.value);
   }
 
   const handleTryAgain = useCallback(async () => {
@@ -79,8 +79,11 @@ export function useHome() {
   }, [contactBeingDeleted.id, handleCloseDeleteModal, setContacts]);
 
   const filteredContacts = useMemo(
-    () => contacts.filter((contact) => contact.name.toLowerCase().includes(search.toLowerCase())),
-    [contacts, search],
+    () => contacts
+      .filter(
+        (contact) => contact.name.toLowerCase().includes(searchTerm.toLowerCase()),
+      ),
+    [contacts, searchTerm],
   );
 
   return {
@@ -91,8 +94,8 @@ export function useHome() {
     isDeleteModalVisible,
     isLoadingDelete,
     contacts,
-    search,
-    handleChangeSearch,
+    searchTerm,
+    handleChangeSearchTerm,
     hasError,
     filteredContacts,
     handleTryAgain,
