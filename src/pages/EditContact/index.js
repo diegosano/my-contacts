@@ -1,14 +1,28 @@
-import { Container } from './Container';
-// import { Presentation } from './Presentation';
-// or
-// export { default as Presentation } from './Presentation';
+import { ContactForm } from '../../components/ContactForm';
+import { PageHeader } from '../../components/PageHeader';
+import { Loader } from '../../components/Loader';
+
+import { useEditContact } from './useEditContact';
 
 export function EditContact() {
-  return <Container />;
-}
+  const {
+    isLoading,
+    contactName,
+    contactFormRef,
+    handleSubmit,
+  } = useEditContact();
 
-// another way is export as object
-// export {
-//   Container,
-//   Presentation,
-// };
+  return (
+    <>
+      <Loader isLoading={isLoading} />
+
+      <PageHeader title={isLoading ? 'Loading...' : `Edit ${contactName}`} />
+
+      <ContactForm
+        ref={contactFormRef}
+        buttonLabel="Save"
+        onSubmit={handleSubmit}
+      />
+    </>
+  );
+}
