@@ -4,25 +4,6 @@ export const Container = styled.div`
   margin-top: 32px;
 `;
 
-export const EmptyListContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-top: 16px;
-
-  p {
-    font-size: 16px;
-    line-height: 20px;
-    text-align: center;
-    color: ${({ theme }) => theme.colors.gray[200]};
-    margin-top: 8px;
-
-    strong {
-      color: ${({ theme }) => theme.colors.primary.main};
-    }
-  }
-`;
-
 export const ListHeader = styled.header`
   margin-top: 24px;
   margin-bottom: 8px;

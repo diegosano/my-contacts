@@ -6,13 +6,13 @@ import { Modal } from '../../components/Modal';
 import { InputSearch } from './components/InputSearch';
 import { Header } from './components/Header';
 import { ErrorStatus } from './components/ErrorStatus';
+import { EmptyList } from './components/EmptyList';
 
 import { useHome } from './useHome';
 
 import arrow from '../../assets/images/icons/arrow.svg';
 import edit from '../../assets/images/icons/edit.svg';
 import trash from '../../assets/images/icons/trash.svg';
-import emptyBox from '../../assets/images/empty-box.svg';
 import magnifierQuestion from '../../assets/images/magnifier-question.svg';
 
 export function Home() {
@@ -55,18 +55,7 @@ export function Home() {
       {!hasError && (
         <>
           {contacts.length === 0 && !isLoading && (
-            <S.EmptyListContainer>
-              <img src={emptyBox} alt="Empty box" />
-
-              <p>
-                You don&apos;t have any contact registered yet! Click on the
-                {' '}
-                <strong>&quot;New contact&quot;</strong>
-                {' '}
-                button above to
-                register your first one!
-              </p>
-            </S.EmptyListContainer>
+            <EmptyList />
           )}
 
           {contacts.length > 0 && filteredContacts.length === 0 && (
