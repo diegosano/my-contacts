@@ -14,6 +14,7 @@ import trash from '../../assets/images/icons/trash.svg';
 import sad from '../../assets/images/sad.svg';
 import emptyBox from '../../assets/images/empty-box.svg';
 import magnifierQuestion from '../../assets/images/magnifier-question.svg';
+import { Header } from './components/Header';
 
 export function Home() {
   const {
@@ -39,32 +40,14 @@ export function Home() {
       <Loader isLoading={isLoading} />
 
       {contacts.length > 0 && (
-        <InputSearch
-          value={search}
-          onChange={handleChangeSearch}
-        />
+        <InputSearch value={search} onChange={handleChangeSearch} />
       )}
 
-      <S.Header
-        justifyContent={
-          // eslint-disable-next-line no-nested-ternary
-          hasError
-            ? 'flex-end'
-            : contacts.length > 0
-              ? 'space-between'
-              : 'center'
-        }
-      >
-        {!hasError && contacts.length > 0 && (
-          <strong>
-            {filteredContacts.length}
-            {' '}
-            {filteredContacts.length === 1 ? 'contact' : 'contacts'}
-          </strong>
-        )}
-
-        <Link to="/new">New contact</Link>
-      </S.Header>
+      <Header
+        hasError={hasError}
+        quantityOfContacts={contacts.length}
+        quantityOfFilteredContacts={filteredContacts.length}
+      />
 
       {hasError && (
         <S.ErrorContainer>
