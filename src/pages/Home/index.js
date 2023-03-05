@@ -17,13 +17,14 @@ import trash from '../../assets/images/icons/trash.svg';
 import sad from '../../assets/images/sad.svg';
 import emptyBox from '../../assets/images/empty-box.svg';
 import magnifierQuestion from '../../assets/images/magnifier-question.svg';
+import { useSafeAsyncState } from '../../hooks/useSafeAsyncState';
 
 export function Home() {
-  const [contacts, setContacts] = useState([]);
+  const [contacts, setContacts] = useSafeAsyncState([]);
   const [orderBy, setOrderBy] = useState('ASC');
   const [search, setSearch] = useState('');
-  const [isLoading, setIsLoading] = useState(true);
-  const [hasError, setHasError] = useState(false);
+  const [isLoading, setIsLoading] = useSafeAsyncState(true);
+  const [hasError, setHasError] = useSafeAsyncState(false);
   const [isDeleteModalVisible, setIsDeleteModalVisible] = useState(false);
   const [contactBeingDeleted, setContactBeingDeleted] = useState({});
   const [isLoadingDelete, setIsLoadingDelete] = useState(false);
@@ -39,7 +40,7 @@ export function Home() {
     } finally {
       setIsLoading(false);
     }
-  }, [orderBy]);
+  }, [orderBy, setContacts, setHasError, setIsLoading]);
 
   useEffect(() => {
     loadContacts();

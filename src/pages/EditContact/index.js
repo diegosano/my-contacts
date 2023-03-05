@@ -1,6 +1,4 @@
-import {
-  useCallback, useEffect, useRef, useState,
-} from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 
 import { ContactForm } from '../../components/ContactForm';
@@ -9,10 +7,11 @@ import { Loader } from '../../components/Loader';
 
 import ContactsService from '../../services/ContactsService';
 import { toast } from '../../utils/toast';
+import { useSafeAsyncState } from '../../hooks/useSafeAsyncState';
 
 export function EditContact() {
-  const [isLoading, setIsLoading] = useState(true);
-  const [contactName, setContactName] = useState('');
+  const [isLoading, setIsLoading] = useSafeAsyncState(true);
+  const [contactName, setContactName] = useSafeAsyncState('');
   const contactFormRef = useRef(null);
   const { id } = useParams();
   const history = useHistory();
@@ -38,24 +37,27 @@ export function EditContact() {
     if (contactFormRef.current) {
       loadContact();
     }
-  }, [history, id]);
+  }, [history, id, setContactName, setIsLoading]);
 
-  const handleSubmit = useCallback(async (contact) => {
-    try {
-      const contactData = await ContactsService.update(id, contact);
+  const handleSubmit = useCallback(
+    async (contact) => {
+      try {
+        const contactData = await ContactsService.update(id, contact);
 
-      setContactName(contactData.name);
-      toast({
-        type: 'success',
-        text: 'Contact successfully updated',
-      });
-    } catch {
-      toast({
-        type: 'danger',
-        text: 'An error occurred while updating the contact!',
-      });
-    }
-  }, [id]);
+        setContactName(contactData.name);
+        toast({
+          type: 'success',
+          text: 'Contact successfully updated',
+        });
+      } catch {
+        toast({
+          type: 'danger',
+          text: 'An error occurred while updating the contact!',
+        });
+      }
+    },
+    [id],
+  );
 
   return (
     <>
