@@ -4,6 +4,7 @@ import * as S from './styles';
 import { Loader } from '../../components/Loader';
 import { Modal } from '../../components/Modal';
 import { Button } from '../../components/Button';
+import { InputSearch } from './components/InputSearch';
 
 import { useHome } from './useHome';
 
@@ -37,27 +38,11 @@ export function Home() {
     <S.Container>
       <Loader isLoading={isLoading} />
 
-      <Modal
-        title={`Are you sure you want to remove the contact ”${contactBeingDeleted?.name}”?`}
-        confirmLabel="Delete"
-        onCancel={handleCloseDeleteModal}
-        onConfirm={handleConfirmDeleteContact}
-        visible={isDeleteModalVisible}
-        isLoading={isLoadingDelete}
-        danger
-      >
-        <p>This action cannot be undone!</p>
-      </Modal>
-
       {contacts.length > 0 && (
-        <S.InputSearchContainer>
-          <input
-            value={search}
-            onChange={handleChangeSearch}
-            type="text"
-            placeholder="Search contact"
-          />
-        </S.InputSearchContainer>
+        <InputSearch
+          value={search}
+          onChange={handleChangeSearch}
+        />
       )}
 
       <S.Header
@@ -168,6 +153,18 @@ export function Home() {
               </div>
             </S.Card>
           ))}
+
+          <Modal
+            title={`Are you sure you want to remove the contact ”${contactBeingDeleted?.name}”?`}
+            confirmLabel="Delete"
+            onCancel={handleCloseDeleteModal}
+            onConfirm={handleConfirmDeleteContact}
+            visible={isDeleteModalVisible}
+            isLoading={isLoadingDelete}
+            danger
+          >
+            <p>This action cannot be undone!</p>
+          </Modal>
         </>
       )}
     </S.Container>
