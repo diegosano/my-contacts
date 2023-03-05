@@ -56,7 +56,7 @@ export function EditContact() {
         });
       }
     },
-    [id],
+    [id, setContactName],
   );
 
   return (
