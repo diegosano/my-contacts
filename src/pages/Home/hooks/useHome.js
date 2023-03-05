@@ -53,7 +53,6 @@ export function useHome() {
 
   const handleCloseDeleteModal = useCallback(() => {
     setIsDeleteModalVisible(false);
-    setContactBeingDeleted({});
   }, []);
 
   const handleConfirmDeleteContact = useCallback(async () => {
