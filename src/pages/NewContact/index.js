@@ -1,31 +1,9 @@
-import { useCallback, useRef } from 'react';
-
 import { ContactForm } from '../../components/ContactForm';
 import { PageHeader } from '../../components/PageHeader';
-
-import ContactsService from '../../services/ContactsService';
-import { toast } from '../../utils/toast';
+import { useNewContact } from './useNewContact';
 
 export function NewContact() {
-  const contactFormRef = useRef(null);
-
-  const handleSubmit = useCallback(async (contact) => {
-    try {
-      await ContactsService.create(contact);
-
-      contactFormRef.current?.resetFields();
-
-      toast({
-        type: 'success',
-        text: 'Contact successfully registered',
-      });
-    } catch {
-      toast({
-        type: 'danger',
-        text: 'An error occurred while registering the contact!',
-      });
-    }
-  }, []);
+  const { contactFormRef, handleSubmit } = useNewContact();
 
   return (
     <>
