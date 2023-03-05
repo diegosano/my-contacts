@@ -3,18 +3,17 @@ import { Link } from 'react-router-dom';
 import * as S from './styles';
 import { Loader } from '../../components/Loader';
 import { Modal } from '../../components/Modal';
-import { Button } from '../../components/Button';
 import { InputSearch } from './components/InputSearch';
+import { Header } from './components/Header';
+import { ErrorStatus } from './components/ErrorStatus';
 
 import { useHome } from './useHome';
 
 import arrow from '../../assets/images/icons/arrow.svg';
 import edit from '../../assets/images/icons/edit.svg';
 import trash from '../../assets/images/icons/trash.svg';
-import sad from '../../assets/images/sad.svg';
 import emptyBox from '../../assets/images/empty-box.svg';
 import magnifierQuestion from '../../assets/images/magnifier-question.svg';
-import { Header } from './components/Header';
 
 export function Home() {
   const {
@@ -50,17 +49,7 @@ export function Home() {
       />
 
       {hasError && (
-        <S.ErrorContainer>
-          <img src={sad} alt="Sad face" />
-
-          <div className="details">
-            <strong>An error has occurred</strong>
-
-            <Button type="button" onClick={handleTryAgain}>
-              Try again
-            </Button>
-          </div>
-        </S.ErrorContainer>
+        <ErrorStatus onTryAgain={handleTryAgain} />
       )}
 
       {!hasError && (
