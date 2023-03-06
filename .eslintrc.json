@@ -28,6 +28,7 @@
     "no-empty": ["error", { "allowEmptyCatch": true }],
     "react/require-default-props": ["warn", {
       "functions": "defaultArguments"
-    }]
+    }],
+    "react/function-component-definition": ["error", { "unnamedComponents": "arrow-function" }]
   }
 }
