@@ -1,14 +1,14 @@
 import PropTypes from 'prop-types';
-import { useCallback, useEffect } from 'react';
+import { useCallback, useEffect, memo } from 'react';
 
 import * as S from './styles';
 
 import xCircle from '../../../assets/images/icons/x-circle.svg';
 import checkCircle from '../../../assets/images/icons/check-circle.svg';
 
-export function ToastMessage({
+export const ToastMessage = memo(({
   message, onRemoveMessage, isLeaving, animatedRef,
-}) {
+}) => {
   useEffect(() => {
     const timeoutId = setTimeout(() => {
       onRemoveMessage(message.id);
@@ -37,7 +37,7 @@ export function ToastMessage({
       <strong>{message.text}</strong>
     </S.Container>
   );
-}
+});
 
 ToastMessage.propTypes = {
   message: PropTypes.shape({
