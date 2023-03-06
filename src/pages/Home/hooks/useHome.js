@@ -1,5 +1,10 @@
 import {
-  useCallback, useEffect, useMemo, useState,
+  useCallback,
+  useEffect,
+  // eslint-disable-next-line no-unused-vars
+  useMemo,
+  useState,
+  useTransition,
 } from 'react';
 
 import ContactsService from '../../../services/ContactsService';
@@ -15,15 +20,19 @@ export function useHome() {
   const [isDeleteModalVisible, setIsDeleteModalVisible] = useState(false);
   const [contactBeingDeleted, setContactBeingDeleted] = useState({});
   const [isLoadingDelete, setIsLoadingDelete] = useState(false);
+  const [filteredContacts, setFilteredContacts] = useState([]);
+  const [isPending, startTransition] = useTransition();
 
   const loadContacts = useCallback(async () => {
     try {
       setIsLoading(true);
       const contactsList = await ContactsService.findAll(orderBy);
       setContacts(contactsList);
+      setFilteredContacts(contactsList);
       setHasError(false);
     } catch {
       setContacts([]);
+      setFilteredContacts([]);
       setHasError(true);
     } finally {
       setIsLoading(false);
@@ -34,22 +43,30 @@ export function useHome() {
     loadContacts();
   }, [loadContacts]);
 
-  function handleToggleOrderBy() {
+  const handleToggleOrderBy = useCallback(() => {
     setOrderBy((prevState) => (prevState === 'ASC' ? 'DESC' : 'ASC'));
-  }
+  }, []);
 
   function handleChangeSearchTerm(event) {
-    setSearchTerm(event.target.value);
+    const { value } = event.target;
+
+    setSearchTerm(value);
+
+    startTransition(() => {
+      setFilteredContacts(
+        contacts.filter((contact) => contact.name.toLowerCase().includes(value.toLowerCase())),
+      );
+    });
   }
 
   const handleTryAgain = useCallback(async () => {
     loadContacts();
   }, [loadContacts]);
 
-  function handleDeleteContact(contact) {
+  const handleDeleteContact = useCallback((contact) => {
     setIsDeleteModalVisible(true);
     setContactBeingDeleted(contact);
-  }
+  }, []);
 
   const handleCloseDeleteModal = useCallback(() => {
     setIsDeleteModalVisible(false);
@@ -60,8 +77,9 @@ export function useHome() {
       setIsLoadingDelete(true);
       await ContactsService.delete(contactBeingDeleted.id);
 
-      setContacts((prevState) => prevState
-        .filter((contact) => contact.id !== contactBeingDeleted.id));
+      setContacts(
+        (prevState) => prevState.filter((contact) => contact.id !== contactBeingDeleted.id),
+      );
       handleCloseDeleteModal();
 
       toast({
@@ -78,15 +96,16 @@ export function useHome() {
     }
   }, [contactBeingDeleted.id, handleCloseDeleteModal, setContacts]);
 
-  const filteredContacts = useMemo(
-    () => contacts
-      .filter(
-        (contact) => contact.name.toLowerCase().includes(searchTerm.toLowerCase()),
-      ),
-    [contacts, searchTerm],
-  );
+  // const filteredContacts = useMemo(
+  //   () => contacts
+  //     .filter(
+  //       (contact) => contact.name.toLowerCase().includes(searchTerm.toLowerCase()),
+  //     ),
+  //   [contacts, searchTerm],
+  // );
 
   return {
+    isPending,
     isLoading,
     contactBeingDeleted,
     handleCloseDeleteModal,

@@ -1,28 +1,26 @@
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
+import { memo } from 'react';
 import * as S from './styles';
 
 import arrow from '../../../../assets/images/icons/arrow.svg';
 import edit from '../../../../assets/images/icons/edit.svg';
 import trash from '../../../../assets/images/icons/trash.svg';
 
-export function ContactsList({
-  filteredContacts,
-  orderBy,
-  onToggleOrderBy,
-  onDeleteContact,
-}) {
-  return (
+export const ContactsList = memo(
+  ({
+    filteredContacts, orderBy, onToggleOrderBy, onDeleteContact,
+  }) => (
     <>
       {filteredContacts.length > 0 && (
-        <S.ListHeader orderBy={orderBy}>
-          <button type="button" onClick={onToggleOrderBy}>
-            <span>Name</span>
+      <S.ListHeader orderBy={orderBy}>
+        <button type="button" onClick={onToggleOrderBy}>
+          <span>Name</span>
 
-            <img src={arrow} alt="Arrow icon" />
-          </button>
-        </S.ListHeader>
+          <img src={arrow} alt="Arrow icon" />
+        </button>
+      </S.ListHeader>
       )}
 
       {filteredContacts.map((contact) => (
@@ -50,8 +48,8 @@ export function ContactsList({
         </S.Card>
       ))}
     </>
-  );
-}
+  ),
+);
 
 ContactsList.propTypes = {
   filteredContacts: PropTypes.arrayOf(

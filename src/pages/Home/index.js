@@ -12,6 +12,7 @@ import { useHome } from './hooks/useHome';
 
 export function Home() {
   const {
+    isPending,
     isLoading,
     contactBeingDeleted,
     handleCloseDeleteModal,
@@ -53,6 +54,7 @@ export function Home() {
 
       {hasContacts && (
         <>
+          {isPending && <h2>Is pending...</h2>}
           <ContactsList
             filteredContacts={filteredContacts}
             orderBy={orderBy}
