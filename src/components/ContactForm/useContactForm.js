@@ -40,10 +40,12 @@ export function useContactForm({ onSubmit, ref }) {
   );
 
   useEffect(() => {
+    const abortController = new AbortController();
+
     async function loadCategories() {
       try {
         setIsLoadingCategories(true);
-        const categoriesList = await CategoriesService.findAll();
+        const categoriesList = await CategoriesService.findAll(abortController.signal);
         setCategories(categoriesList);
       } catch {
       } finally {
@@ -52,6 +54,8 @@ export function useContactForm({ onSubmit, ref }) {
     }
 
     loadCategories();
+
+    return () => abortController.abort();
   }, [setCategories, setIsLoadingCategories]);
 
   const handleSubmit = useCallback(
