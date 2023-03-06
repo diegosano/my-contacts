@@ -8,22 +8,38 @@ export function useAnimatedList(initialValue = []) {
   const animatedRefs = useRef(new Map());
   const animationEndListeners = useRef(new Map());
 
-  const handleAnimationEnd = useCallback((id) => {
-    setItems((prevState) => prevState.filter((item) => item.id !== id));
+  const handleAnimationEnd = useCallback((itemId) => {
+    const removeListener = animationEndListeners.current.get(itemId);
+    removeListener();
+
+    animationEndListeners.current.delete(itemId);
+    animatedRefs.current.delete(itemId);
+
+    setItems((prevState) => prevState.filter((item) => item.id !== itemId));
+    setPendingRemovalItemsIds((prevState) => prevState.filter((id) => id !== itemId));
   }, []);
 
   useEffect(() => {
     pendingRemovalItemsIds.forEach((itemId) => {
       const animatedRef = animatedRefs.current.get(itemId);
       const alreadyHasListener = animationEndListeners.current.has(itemId);
+      const animatedElement = animatedRef?.current;
 
-      if (animatedRef?.current && !alreadyHasListener) {
-        animationEndListeners.current.set(itemId, true);
+      if (animatedElement && !alreadyHasListener) {
+        const onAnimationEnd = () => handleAnimationEnd(itemId);
+        const removeListener = () => animatedElement.removeEventListener('animationend', onAnimationEnd);
 
-        animatedRef.current.addEventListener('animationend', () => handleAnimationEnd(itemId));
+        animatedElement.addEventListener('animationend', onAnimationEnd);
+        animationEndListeners.current.set(itemId, removeListener);
       }
     });
   }, [handleAnimationEnd, pendingRemovalItemsIds]);
+
+  useEffect(() => {
+    const removeListeners = animationEndListeners.current;
+
+    return () => removeListeners.forEach((removeListener) => removeListener());
+  }, []);
 
   const handleRemoveItem = useCallback((id) => {
     setPendingRemovalItemsIds((prevState) => [...prevState, id]);
@@ -41,14 +57,12 @@ export function useAnimatedList(initialValue = []) {
   }, []);
 
   const renderList = useCallback(
-    (renderItem) => items.map(
-      (item) => {
-        const isLeaving = pendingRemovalItemsIds.includes(item.id);
-        const animatedRef = getAnimatedRef(item.id);
+    (renderItem) => items.map((item) => {
+      const isLeaving = pendingRemovalItemsIds.includes(item.id);
+      const animatedRef = getAnimatedRef(item.id);
 
-        return renderItem(item, { isLeaving, animatedRef });
-      },
-    ),
+      return renderItem(item, { isLeaving, animatedRef });
+    }),
     [getAnimatedRef, items, pendingRemovalItemsIds],
   );
 
