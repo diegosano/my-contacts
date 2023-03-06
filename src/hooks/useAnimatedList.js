@@ -12,11 +12,18 @@ export function useAnimatedList(initialValue = []) {
     setItems((prevState) => prevState.filter((item) => item.id !== id));
   }, []);
 
+  const renderList = useCallback(
+    (renderItem) => items.map(
+      (item) => renderItem(item, { isLeaving: pendingRemovalItemsIds.includes(item.id) }),
+    ),
+    [items, pendingRemovalItemsIds],
+  );
+
   return {
     items,
     setItems,
-    pendingRemovalItemsIds,
     handleRemoveItem,
     handleAnimationEnd,
+    renderList,
   };
 }
