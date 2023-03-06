@@ -1,10 +1,9 @@
 import {
   useCallback,
+  useDeferredValue,
   useEffect,
-  // eslint-disable-next-line no-unused-vars
   useMemo,
   useState,
-  useTransition,
 } from 'react';
 
 import ContactsService from '../../../services/ContactsService';
@@ -15,13 +14,12 @@ export function useHome() {
   const [contacts, setContacts] = useSafeAsyncState([]);
   const [orderBy, setOrderBy] = useState('ASC');
   const [searchTerm, setSearchTerm] = useState('');
-  const [deferredSearchTerm, setDeferredSearchTerm] = useState('');
   const [isLoading, setIsLoading] = useSafeAsyncState(true);
   const [hasError, setHasError] = useSafeAsyncState(false);
   const [isDeleteModalVisible, setIsDeleteModalVisible] = useState(false);
   const [contactBeingDeleted, setContactBeingDeleted] = useState({});
   const [isLoadingDelete, setIsLoadingDelete] = useState(false);
-  const [isPending, startTransition] = useTransition();
+  const deferredSearchTerm = useDeferredValue(searchTerm);
 
   const loadContacts = useCallback(async () => {
     try {
@@ -46,13 +44,7 @@ export function useHome() {
   }, []);
 
   function handleChangeSearchTerm(event) {
-    const { value } = event.target;
-
-    setSearchTerm(value);
-
-    startTransition(() => {
-      setDeferredSearchTerm(value);
-    });
+    setSearchTerm(event.target.value);
   }
 
   const handleTryAgain = useCallback(async () => {
@@ -101,7 +93,6 @@ export function useHome() {
   );
 
   return {
-    isPending,
     isLoading,
     contactBeingDeleted,
     handleCloseDeleteModal,
