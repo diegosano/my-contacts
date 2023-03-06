@@ -12,6 +12,18 @@ const messageIn = keyframes`
   }
 `;
 
+const messageOut = keyframes`
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  to {
+    opacity: 0;
+    transform: translateY(100%);
+  }
+`;
+
 const containerVariants = {
   default: css`
     background: ${({ theme }) => theme.colors.primary.main};
@@ -43,4 +55,9 @@ export const Container = styled.div`
   }
 
   ${({ variant }) => containerVariants[variant] || containerVariants.default}
+
+  ${({ isLeaving }) => isLeaving
+    && css`
+      animation: ${messageOut} 0.2s;
+    `}
 `;
