@@ -58,6 +58,6 @@ export const Container = styled.div`
 
   ${({ isLeaving }) => isLeaving
     && css`
-      animation: ${messageOut} 0.2s;
+      animation: ${messageOut} 0.2s forwards;
     `}
 `;
