@@ -7,7 +7,7 @@ import { ToastContainer } from '../Toast/ToastContainer';
 
 import GlobalStyles from '../../assets/styles/global';
 import defaultTheme from '../../assets/styles/themes/default';
-import { Routes } from '../../routes';
+import { Router } from '../../router';
 
 export function App() {
   return (
@@ -17,7 +17,7 @@ export function App() {
 
         <S.Container>
           <Header />
-          <Routes />
+          <Router />
         </S.Container>
 
         <ToastContainer />
