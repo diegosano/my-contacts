@@ -15,12 +15,12 @@ export function useHome() {
   const [contacts, setContacts] = useSafeAsyncState([]);
   const [orderBy, setOrderBy] = useState('ASC');
   const [searchTerm, setSearchTerm] = useState('');
+  const [deferredSearchTerm, setDeferredSearchTerm] = useState('');
   const [isLoading, setIsLoading] = useSafeAsyncState(true);
   const [hasError, setHasError] = useSafeAsyncState(false);
   const [isDeleteModalVisible, setIsDeleteModalVisible] = useState(false);
   const [contactBeingDeleted, setContactBeingDeleted] = useState({});
   const [isLoadingDelete, setIsLoadingDelete] = useState(false);
-  const [filteredContacts, setFilteredContacts] = useState([]);
   const [isPending, startTransition] = useTransition();
 
   const loadContacts = useCallback(async () => {
@@ -28,11 +28,9 @@ export function useHome() {
       setIsLoading(true);
       const contactsList = await ContactsService.findAll(orderBy);
       setContacts(contactsList);
-      setFilteredContacts(contactsList);
       setHasError(false);
     } catch {
       setContacts([]);
-      setFilteredContacts([]);
       setHasError(true);
     } finally {
       setIsLoading(false);
@@ -53,9 +51,7 @@ export function useHome() {
     setSearchTerm(value);
 
     startTransition(() => {
-      setFilteredContacts(
-        contacts.filter((contact) => contact.name.toLowerCase().includes(value.toLowerCase())),
-      );
+      setDeferredSearchTerm(value);
     });
   }
 
@@ -96,13 +92,13 @@ export function useHome() {
     }
   }, [contactBeingDeleted.id, handleCloseDeleteModal, setContacts]);
 
-  // const filteredContacts = useMemo(
-  //   () => contacts
-  //     .filter(
-  //       (contact) => contact.name.toLowerCase().includes(searchTerm.toLowerCase()),
-  //     ),
-  //   [contacts, searchTerm],
-  // );
+  const filteredContacts = useMemo(
+    () => contacts
+      .filter(
+        (contact) => contact.name.toLowerCase().includes(deferredSearchTerm.toLowerCase()),
+      ),
+    [contacts, deferredSearchTerm],
+  );
 
   return {
     isPending,
